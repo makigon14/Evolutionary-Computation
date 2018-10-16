@@ -5,7 +5,6 @@ Created on Mon Oct 15 00:45:25 2018
 @author: makigondesk
 """
 
-# Portfolio optimization using particle swarm optimization article - PSO bare bones code
  
 import random
 import numpy as np
@@ -17,8 +16,8 @@ c2 = 1.496180 # Scaling co-efficient on the cognitive component
 dimension = 1 # Size of the problem
 iterations = 1000
 swarmSize = 30
- 
-# This class contains the code of the Particles in the swarm
+
+
 class Particle:
 
     def __init__(self):
