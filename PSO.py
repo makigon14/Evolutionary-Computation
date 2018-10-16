@@ -9,24 +9,24 @@ Created on Mon Oct 15 00:45:25 2018
  
 import random
 import numpy as np
+import math
  
 w = 0.729844 # Inertia weight to prevent velocities becoming too large
 c1 = 1.496180 # Scaling co-efficient on the social component
 c2 = 1.496180 # Scaling co-efficient on the cognitive component
-dimension = 3 # Size of the problem
+dimension = 1 # Size of the problem
 iterations = 1000
 swarmSize = 30
  
 # This class contains the code of the Particles in the swarm
 class Particle:
 
- 
     def __init__(self):
         self.velocity=[]
         self.pos=[]
         self.pBest=[]
         for i in range(dimension):
-            self.pos.append(30*random.random())
+            self.pos.append(30*random.uniform(-5.12,5.12))
             self.velocity.append(0.01 * random.random())
             self.pBest.append(self.pos[i])
         return
@@ -46,16 +46,16 @@ class Particle:
         return
  
     def satisfyConstraints(self):
-        #This is where constraints are satisfied
+        #do not use this time
         return
  
 # This class contains the particle swarm optimization algorithm
 class ParticleSwarmOptimizer:
-    solution=[]
-    swarm=[]
+    #solution=[]
+    #swarm=[]
     def __init__(self):
-        #self.solution = []
-        #self.swarm = []
+        self.solution = []
+        self.swarm = []
         for h in range(swarmSize):
             particle = Particle()
             self.swarm.append(particle)
@@ -70,7 +70,7 @@ class ParticleSwarmOptimizer:
             #Get the global best particle
             for j in range(swarmSize):
                 pBest = self.swarm[j].pBest
-                if self.f(pBest) <self.f(gBest):
+                if self.f2(pBest) <self.f2(gBest):
                     gBest = pBest  
             solution = gBest
             #Update position of each paricle
@@ -81,19 +81,26 @@ class ParticleSwarmOptimizer:
             #Update the personal best positions
             for l in range(swarmSize):
                 pBest = self.swarm[l].pBest
-                if self.f(self.swarm[l].pos) <self.f(pBest):
+                if self.f2(self.swarm[l].pos) <self.f2(pBest):
                     self.swarm[l].pBest = self.swarm[l].pos
-            print(self.f(gBest))
+            print(self.f2(gBest),gBest)
             #print(gBest)
         return solution
  
-    def f(self, solution):
-        #This is where the metaheuristic is defined
+    def f(self, solution): #Sphere function
         
         np_sol=np.array(solution)
         np_sol=np_sol**2
         
-        return np.sum(np_sol)  
+        return np.sum(np_sol)
+
+    def f2(self, solution): #Rastrigin function
+
+        for i in range(dimension):
+            y = solution[i]**2-10*math.cos(2*math.pi*solution[i])
+
+        return 10*dimension+y
+
  
 def main():
     pso = ParticleSwarmOptimizer()
